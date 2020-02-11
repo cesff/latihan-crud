@@ -15,6 +15,18 @@ class CreateMapelsTable extends Migration
     {
         Schema::create('mapels', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('nama');
+            $table->timestamps();
+        });
+        Schema::create('mapel_siswa', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id_siswa');
+            $table->foreign('id_siswa')->references('id')
+                  ->on('siswas')->onDelete('cascade');
+
+            $table->unsignedBigInteger('id_mapel');
+            $table->foreign('id_mapel')->references('id')
+                  ->on('mapels')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,5 +39,6 @@ class CreateMapelsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('mapels');
+        Schema::dropIfExists('mapel_siswa');
     }
 }
