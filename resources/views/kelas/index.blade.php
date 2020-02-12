@@ -30,13 +30,23 @@
                             <tbody>
                                 @php $no=1; @endphp
                                 @foreach ($kelas as $data)
+                                <form action="{{route('kelas.destroy',$data->id)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
                                     <tr>
                                         <td>{{$no++}}</td>
                                         <td>{{$data->nama}}</td>
-                                        <td>Show</td>
-                                        <td>Edit</td>
-                                        <td>Delete</td>
+                                        <td>
+                                            <a href="{{route('kelas.show',$data->id)}}" class="btn btn-info">Show</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{route('kelas.edit',$data->id)}}" class="btn btn-success">Edit</a>
+                                        </td>
+                                        <td>
+                                            <button type="submit" onclick="return confirm('Apakah anda yakin?');" class="btn btn-danger">Delete</button>
+                                        </td>
                                     </tr>
+                                </form>
                                 @endforeach
                             </tbody>
                         </table>
