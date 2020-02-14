@@ -35,7 +35,7 @@
                                 @method('DELETE')
                                     <tr>
                                         <td>{{$no++}}</td>
-                                        <td>{{$data->nama}}</td>
+                                        <td>{{$data->kelas}}</td>
                                         <td>
                                             <a href="{{route('kelas.show',$data->id)}}" class="btn btn-info">Show</a>
                                         </td>
