@@ -12,7 +12,14 @@
                     <input type="text" name="kelas" value="{{$kelas->kelas}}" class="form-control" readonly>
                     </div>
                     <div class="form-group">
-                        <a href="{{url()->previous()}}" class="btn btn-primary">Kembali</a>
+                        <label>Daftar Siswa</label>
+                        @foreach ($kelas->siswa as $data)
+                        <li>{{$data->nama}} - {{$data->nis}}</li>
+                        @endforeach
+                    </div>
+
+                    <div class="form-group">
+                    <a href="{{url()->previous()}}" class="btn btn-primary">Kembali</a>
                     </div>
                     </div>
             </div>

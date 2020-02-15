@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-20">
             <div class="card">
                 <div class="card-header">
                     Daftar Siswa
@@ -17,7 +17,6 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -27,6 +26,7 @@
                                     <th>Nama</th>
                                     <th>Alamat</th>
                                     <th>Kelas</th>
+                                    <th>Mata Pelajaran</th>
                                     <th colspan="3"><center>Aksi</center></th>
                                 </tr>
                             </thead>
@@ -41,7 +41,16 @@
                                         <td>{{$data->nis}}</td>
                                         <td>{{$data->nama}}</td>
                                         <td>{{$data->alamat}}</td>
-                                        <td>{{$data->kelas}}</td>
+                                        <td>{{$data->kelas->kelas}}</td>
+                                        <td>@foreach($data->mapel as $value)
+                                            <ul>
+                                            <li>{{$value->nama}}</li>
+                                            </ul>
+                                            @endforeach
+                                        </td>
+                                        <form action="{{route('siswa.destroy',$data->id)}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
                                         <td>
                                             <a href="{{route('siswa.show',$data->id)}}" class="btn btn-info">Show</a>
                                         </td>
@@ -51,11 +60,13 @@
                                         <td>
                                             <button type="submit" onclick="return confirm('Apakah anda yakin?');" class="btn btn-danger">Delete</button>
                                         </td>
+                                        </form>
                                     </tr>
                                 </form>
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
                     </div>
                 </div>
             </div>

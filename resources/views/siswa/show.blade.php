@@ -25,6 +25,12 @@
                         <input type="text" class="form-control" value="{{$siswa->kelas->kelas}}" readonly>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>Mata Pelajaran</label>
+                    @foreach ($siswa->mapel as $data)
+                    <li>{{$data->nama}}</li>
+                    @endforeach
+                </div>
                     <div class="form-group">
                  <a href="{{url()->previous()}}" class="btn btn-primary">Kembali</a>
                     </div>

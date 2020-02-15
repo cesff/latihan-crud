@@ -29,7 +29,14 @@
                         @foreach ($kelas as $data)
                         <option value="{{$data->id}}" {{$data->id == $siswa->id_kelas ? 'selected' : ''}}>{{$data->kelas}}</option>
                         @endforeach
-                    </select>
+                        </select>
+                        <div class="form-group">
+                            <label for="">Mata Pelajaran</label>
+                            <select name="mapel[]" class="form-control" multiple>
+                                @foreach ($mapel as $data)
+                                <option value="{{$data->id}}" {{(in_array($data->id,$selected)) ? 'selected = "selected"' : ''}}>{{$data->nama}}</option>
+                                @endforeach
+                            </select>
                 </div>
                     <div class="form-group">
                     <button type="submit" class="btn btn-primary">Ubah</button>

@@ -6,6 +6,7 @@ use App\Siswa;
 use App\Kelas;
 use Illuminate\Http\Request;
 use DB;
+use App\Mapel;
 
 class SiswaController extends Controller
 {
@@ -20,11 +21,11 @@ class SiswaController extends Controller
     }
     public function index()
     {
-        $siswa = DB::table('siswas')
-        ->join('kelas','kelas.id', '=', 'siswas.id_kelas')
-        ->select('siswas.id','siswas.nis','siswas.nama','siswas.alamat','kelas.kelas')
-        ->get();
-        // $siswa = Siswa::all();
+        // $siswa = DB::table('siswas')
+        // ->join('kelas','kelas.id', '=', 'siswas.id_kelas')
+        // ->select('siswas.id','siswas.nis','siswas.nama','siswas.alamat','kelas.kelas')
+        // ->get();
+        $siswa = Siswa::with('kelas','mapel')->get();
         return view('siswa.index',compact('siswa'));
     }
 
@@ -36,7 +37,8 @@ class SiswaController extends Controller
     public function create()
     {
         $kelas = Kelas::all();
-        return view('siswa.create',compact('kelas'));}
+        $mapel = Mapel::all();
+        return view('siswa.create',compact('kelas','mapel'));}
 
     /**
      * Store a newly created resource in storage.
@@ -52,6 +54,7 @@ class SiswaController extends Controller
         $siswa->alamat = $request->alamat;
         $siswa->id_kelas = $request->id_kelas;
         $siswa->save();
+        $siswa->mapel()->attach($request->mapel);
         return redirect()->route('siswa.index');
     }
 
@@ -65,7 +68,8 @@ class SiswaController extends Controller
     {
         $kelas = Kelas::all();
         $siswa = Siswa::findOrFail($id);
-        return view('siswa.show',compact('kelas','siswa'));
+        $mapel = Mapel::all();
+        return view('siswa.show',compact('kelas','siswa','mapel'));
     }
 
     /**
@@ -78,7 +82,9 @@ class SiswaController extends Controller
     {
         $kelas = Kelas::all();
         $siswa = Siswa::findOrFail($id);
-        return view('siswa.edit',compact('kelas','siswa'));
+        $mapel = Mapel::all();
+        $selected = $siswa->mapel->pluck('id')->toArray();
+        return view('siswa.edit',compact('kelas','siswa','selected','mapel'));
     }
 
     /**
@@ -96,6 +102,7 @@ class SiswaController extends Controller
         $siswa->alamat = $request->alamat;
         $siswa->id_kelas = $request->id_kelas;
         $siswa->save();
+        $siswa->mapel()->sync($request->mapel);
         return redirect()->route('siswa.index');
     }
     /**
@@ -106,7 +113,9 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        $siswa = Siswa::findOrFail($id)->delete();
+        $siswa = Siswa::findOrFail($id);
+        $siswa->mapel()->detach();
+        $siswa->delete();
         return redirect()->route('siswa.index');
     }
 }
